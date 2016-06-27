@@ -12,6 +12,8 @@ class Fetcher
     text.match(/Foto: (.+)/).captures.join if text
   end
 
+  private
+
   def fetch_by_tags
     document.at_css('p:contains("Foto:")')&.text
   end
