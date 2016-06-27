@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Evgeny Sugakov"]
   spec.email         = ["shiroginne@gmail.com"]
 
-  spec.summary       = "Fetch copyright under images."
-  spec.description   = "Fetch copyright under images."
+  spec.summary       = "Fetch the authror of the image on a web page."
+  spec.description   = "Fetch the authror of the image on a web page."
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
