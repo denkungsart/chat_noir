@@ -4,6 +4,11 @@ require "chat_noir/fetcher"
 
 module ChatNoir
   def self.copyright(url)
-    Fetcher.new(open(url)).copyright
+    begin
+      Fetcher.new(open(url)).copyright
+    rescue => e
+      puts "Error: #{e.message}"
+      nil
+    end
   end
 end

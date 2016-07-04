@@ -2,7 +2,19 @@ require 'spec_helper'
 
 describe ChatNoir do
   use_vcr_cassette
-  
+
+  describe 'error handling' do
+    before do
+      allow(ChatNoir)
+        .to receive(:open)
+        .and_raise('Zlib::DataError: incorrect header check')
+    end
+
+    it 'returns nil if error is raise' do
+      expect(ChatNoir.copyright('')).to eq(nil)
+    end
+  end
+
   describe '.copyright' do
     let(:url) { 'http://www.rnz.de/nachrichten/metropolregion_artikel,-Deutsches-Chorfest-Kammerchor-Rhein-Neckar-wird-erster-in-Kategorie-Romantik-geistlich-_arid,199431.html#null' }
 
