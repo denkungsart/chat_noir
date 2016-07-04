@@ -15,10 +15,12 @@ class Fetcher
   private
 
   def fetch_by_tags
-    document.at_css('p:contains("Foto:")')&.text
+    node = document.at_css('p:contains("Foto:")')
+    node.text if !node.nil?
   end
 
   def fetch_by_img
-    document.at_css('img[title*="Foto:"]')&.attr('title')
+    node = document.at_css('img[title*="Foto:"]')
+    node.attr('title') if !node.nil?
   end
 end
