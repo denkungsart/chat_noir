@@ -14,7 +14,9 @@ class Fetcher
     text = fetch_by_img || fetch_by_tags || general_div_fetch
     regexp = Regexp.new("[#{KEY_WORDS.join('|')}][#{SEPARATORS.join('|')}] (.+)")
 
-    text.match(regexp).captures.join.strip if text
+    if match = text.match(regexp)
+      match.captures.join.strip
+    end
   end
 
   private
