@@ -1,19 +1,33 @@
 require 'spec_helper'
 
 describe Fetcher do
-  context 'when copyright is in html tag' do
-    it 'fetches copyright for photo' do
-      sample_page = File.read(File.join("spec", "data", "test_page.html"))
+  use_vcr_cassette
 
-      expect(Fetcher.new(sample_page).copyright).to eq('Marco Einfeldt')
+  let(:sample_page) { open(url) }
+
+  context 'when copyright is in html tag' do
+    context 'i or p tag' do
+      let(:url) { 'http://www.stuttgarter-nachrichten.de/inhalt.chor-aus-pretoria-zu-gast-in-stuttgart-suedafrikanische-klaenge-im-theaterhaus.200bba58-e54d-4c2a-91de-ab06b9b592f8.html' }
+
+      it 'fetches copyright for photo' do
+        expect(Fetcher.new(sample_page).copyright).to eq('Lichtgut/Max Kovalenko')
+      end
+    end
+
+    context 'div tag' do
+      let(:url) { 'http://www.augsburger-allgemeine.de/augsburg-land/Chormusik-mit-tschechischem-Akzent-id38019737.html' }
+
+      it 'fetches copyright for photo' do
+        expect(Fetcher.new(sample_page).copyright).to eq('Sigrid Wagner')
+      end
     end
   end
 
   context 'when copyright is in img tag' do
-    it 'fetches copyright for photo' do
-      sample_page = File.read(File.join("spec", "data", "test_page2.html"))
+    let(:url) { 'http://www.kleinezeitung.at/k/kaernten/lavanttal/peak_lavanttal/5011256/Lavanttaler-Wochenvorschau_Ein-ChormusikErlebnis-mit-jungen-Stimmen' }
 
-      expect(Fetcher.new(sample_page).copyright).to eq('Sebastian von Melle')
+    it 'fetches copyright for photo' do
+      expect(Fetcher.new(sample_page).copyright).to eq('KK/Veranstalter')
     end
   end
 end
