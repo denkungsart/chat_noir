@@ -1,5 +1,6 @@
 require "open-uri"
 require "chat_noir/version"
+require "chat_noir/basic_search"
 require "chat_noir/fetcher"
 
 module ChatNoir
