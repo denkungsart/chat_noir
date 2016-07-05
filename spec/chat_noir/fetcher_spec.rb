@@ -30,4 +30,12 @@ describe Fetcher do
       expect(Fetcher.new(sample_page).copyright).to eq('KK/Veranstalter')
     end
   end
+
+  context 'when copyright is only ©' do
+    let(:url) { 'http://magazin.klassik.com/news/teaser.cfm?ID=12745' }
+
+    it 'fetches copyright for photo' do
+      expect(Fetcher.new(sample_page).copyright).to eq('Robert Lehmann')
+    end
+  end
 end

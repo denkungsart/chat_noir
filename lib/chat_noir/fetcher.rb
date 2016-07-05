@@ -1,28 +1,42 @@
 require 'nokogiri'
 
 class Fetcher
-  KEY_WORDS = ['Foto', 'Bild']
-  SEPARATORS = [':', '©', ' ']
+  KEY_WORDS = [
+    'Foto', 'Foto:', 'Foto ©',
+    'Bild:',
+    'Quelle:',
+    '©'
+  ]
 
   attr_reader :document
 
   def initialize(html_document)
-    @document = Nokogiri::HTML(html_document)
+    @document = Nokogiri::HTML(html_document).xpath('//body')
+    raise "Body not found" if document.nil?
   end
 
   def copyright
-    text = fetch_by_img || fetch_by_tags || general_div_fetch
-    regexp = Regexp.new("[#{KEY_WORDS.join('|')}][#{SEPARATORS.join('|')}] (.+)")
-
-    if match = text.match(regexp)
-      match.captures.join.strip
+    %i(fetch_by_img fetch_by_tags general_div_fetch).each do |method|
+      if text = send(method)
+        matched_text = match_copyright(text)
+        return matched_text if matched_text
+      end
     end
+    raise "No copyright was found. Maybe there is no image?"
   end
 
   private
 
+  def match_copyright(text)
+    regexp = Regexp.new("(#{KEY_WORDS.join('|')}) (.+)")
+
+    if match = text.match(regexp)
+      match.captures.last.strip
+    end
+  end
+
   def fetch_by_tags
-    tags = ['i', 'p']
+    tags = ['i', 'p', 'span']
     css_selector = KEY_WORDS.map do |kw|
       tags.map { |tag| (tag + ':contains("' + kw + '")') }
     end.join(', ')
@@ -32,10 +46,12 @@ class Fetcher
   end
 
   def fetch_by_img
-    css_selector = KEY_WORDS.map {|kw| 'img[title*="' + kw + '"]' }.join(', ')
+    css_selector = KEY_WORDS.map do |kw|
+      'img[title*="' + kw + '"], img[alt*="' + kw + '"]'
+    end.join(', ')
 
     node = document.at_css(css_selector)
-    node.attr('title') if !node.nil?
+    node.attr('title') || node.attr('alt') if !node.nil?
   end
 
   def general_div_fetch
