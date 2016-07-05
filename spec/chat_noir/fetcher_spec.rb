@@ -38,4 +38,12 @@ describe Fetcher do
       expect(Fetcher.new(sample_page).copyright).to eq('Robert Lehmann')
     end
   end
+
+  context 'specific tag with class' do
+    let(:url) { 'http://www.schwaebische.de/region_artikel,-Chormusik-aus-vier-Jahrhunderten-_arid,10460622_toid,731.html' }
+
+    it 'fetches copyright for photo' do
+      expect(Fetcher.new(sample_page).copyright).to eq('Joachim Dempe')
+    end
+  end
 end

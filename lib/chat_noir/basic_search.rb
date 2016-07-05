@@ -2,7 +2,7 @@ class BasicSearch
   KEY_WORDS = [
     'Foto', 'Foto:', 'Foto ©',
     'Bild:',
-    'Quelle:',
+    'Quelle:', 'Quellenangabe:',
     '©'
   ]
 
@@ -13,6 +13,10 @@ class BasicSearch
   end
 
   def search_for_copyright
+    if result = specific_cases
+      return result.strip
+    end
+
     %i(fetch_by_img fetch_by_tags general_div_fetch).each do |method|
       if text = send(method)
         matched_text = match_copyright(text)
@@ -33,7 +37,7 @@ class BasicSearch
   end
 
   def fetch_by_tags
-    tags = ['i', 'p', 'span']
+    tags = ['i', 'p', 'span', 'em']
     css_selector = KEY_WORDS.map do |kw|
       tags.map { |tag| (tag + ':contains("' + kw + '")') }
     end.join(', ')
@@ -56,5 +60,15 @@ class BasicSearch
 
     node = document.at_css(css_selector)
     node.text if !node.nil?
+  end
+
+  def specific_cases
+    tag_list = ['address.author']
+    tag_list.each do |tag|
+      node = document.at_css(tag)
+      return node.text if !node.nil?
+    end
+
+    nil
   end
 end
