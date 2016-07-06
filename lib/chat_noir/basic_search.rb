@@ -63,7 +63,7 @@ class BasicSearch
   end
 
   def specific_cases
-    tag_list = ['address.author']
+    tag_list = ['address.author', 'address']
     tag_list.each do |tag|
       node = document.at_css(tag)
       return node.text if !node.nil?
