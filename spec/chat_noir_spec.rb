@@ -21,5 +21,13 @@ describe ChatNoir do
     it 'fetches page and search for copyright' do
       expect(ChatNoir.copyright(url)).to eq('Privat')
     end
+
+    context 'url with plain encoding' do
+      let(:url) { 'http://www.sueddeutsche.de/politik/ukip-nach-dem-brexit-farage-drueckt-sich-vor-der-verantwortung-1.3062729' }
+
+      it 'fetches page and search for copyright' do
+        expect(ChatNoir.copyright(url)).to eq('Bloomberg')
+      end
+    end
   end
 end
