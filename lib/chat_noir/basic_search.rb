@@ -20,7 +20,7 @@ class BasicSearch
     %i(fetch_by_img fetch_by_tags general_div_fetch).each do |method|
       if text = send(method)
         matched_text = match_copyright(text)
-        return matched_text if matched_text
+        return sanitize_text(matched_text) if matched_text
       end
     end
     nil
@@ -70,5 +70,9 @@ class BasicSearch
     end
 
     nil
+  end
+
+  def sanitize_text(text)
+    text.delete("()")
   end
 end
