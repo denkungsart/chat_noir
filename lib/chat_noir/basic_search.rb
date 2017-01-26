@@ -18,7 +18,6 @@ class BasicSearch
     end
 
     %i(fetch_by_img fetch_by_tags general_div_fetch).each do |method|
-      puts "this is #{method} method"
       if text = send(method)
         matched_text = match_copyright(text)
         return sanitize_text(matched_text) if matched_text
