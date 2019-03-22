@@ -22,7 +22,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The gem as easy as pie:
+```ruby
+  url = "https://www.castupload.com/actors/adrian-topol"
+  ChatNoir.copyright(url)
+```
+
+done 🧐
 
 ## Development
 
@@ -32,5 +38,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/chat_noir.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/denkungsart/chat_noir.
