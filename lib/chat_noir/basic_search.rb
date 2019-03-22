@@ -4,7 +4,7 @@ class BasicSearch
     'Bild:',
     'Quelle:', 'Quellenangabe:',
     '©'
-  ]
+  ].freeze
 
   attr_reader :document
 
@@ -17,7 +17,7 @@ class BasicSearch
       return result.strip
     end
 
-    %i(fetch_by_img fetch_by_tags general_div_fetch).each do |method|
+    %i[fetch_by_img fetch_by_tags general_div_fetch].each do |method|
       if text = send(method)
         matched_text = match_copyright(text)
         return sanitize_text(matched_text) if matched_text
@@ -37,13 +37,13 @@ class BasicSearch
   end
 
   def fetch_by_tags
-    tags = ['i', 'p', 'span', 'em']
+    tags = %w[i p span em]
     css_selector = KEY_WORDS.map do |kw|
       tags.map { |tag| (tag + ':contains("' + kw + '")') }
     end.join(', ')
 
     node = document.at_css(css_selector)
-    node.text if !node.nil?
+    node.text unless node.nil?
   end
 
   def fetch_by_img
@@ -52,27 +52,29 @@ class BasicSearch
     end.join(', ')
 
     node = document.at_css(css_selector)
-    node.attr('title') || node.attr('alt') if !node.nil?
+    node.attr('title') || node.attr('alt') unless node.nil?
   end
 
   def general_div_fetch
-    css_selector = KEY_WORDS.map {|kw| 'div:contains("' + kw + '")'}.join(', ')
+    css_selector = KEY_WORDS.map do |kw|
+      'div:contains("' + kw + '")'
+    end.join(', ')
 
     node = document.at_css(css_selector)
-    node.text if !node.nil?
+    node.text unless node.nil?
   end
 
   def specific_cases
-    tag_list = ['address.author', 'address']
+    tag_list = ['address.author']
     tag_list.each do |tag|
       node = document.at_css(tag)
-      return node.text if !node.nil?
+      return node.text unless node.nil?
     end
 
     nil
   end
 
   def sanitize_text(text)
-    text.delete("()")
+    text.delete('()')
   end
 end
