@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Fetcher do
   use_vcr_cassette
 
-  let(:sample_page) { open(url) }
+  let(:sample_page) { URI.open(url) }
 
   context 'when copyright is in html tag' do
     context 'i or p tag' do

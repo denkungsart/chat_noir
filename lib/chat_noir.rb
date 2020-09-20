@@ -8,7 +8,7 @@ module ChatNoir
 
   def self.copyright(url)
     begin
-      Fetcher.new(open(url, OPTIONS)).copyright
+      Fetcher.new(URI.open(url, OPTIONS)).copyright
     rescue => e
       puts "Error: #{e.message}"
       nil
